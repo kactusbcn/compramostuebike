@@ -280,7 +280,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 <script>
 (function () {
   var answers = {};
-  var photoFile = null;
+  var photos = {};
   var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzV0vwGseWbECQi9e5YI-VoajBxS8ejHH1w2sfv8OeEXMDw6OJwbejAcT3Qg345Be57/exec";
   var steps = [
     { key: "nombre", type: "text", q: "¿Cómo te llamas?", hint: "Así sabemos cómo dirigirnos a ti.", placeholder: "Tu nombre", required: true },
@@ -297,7 +297,10 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     { key: "modelo", type: "text", q: "¿Qué modelo es?", hint: "Por ejemplo, Turbo Levo o Rize.", placeholder: "Modelo", required: true },
     { key: "cuadro", type: "choice", q: "¿De qué material es el cuadro?", options: ["Carbono", "Aluminio", "Titanio", "Otro"], required: true },
     { key: "velocidades", type: "select", q: "¿Cuántas velocidades tiene?", options: ["13", "12", "11", "10", "9", "Otra / no sé"], required: true },
-    { key: "foto", type: "file", q: "Muéstranos tu bici", hint: "Una foto de la bici completa, por el lado de la transmisión. Máx. 10 MB.", required: true },
+    { key: "fotoDerecha", type: "file", q: "Foto del lado derecho", hint: "La bici completa, vista desde el lado derecho. Máx. 10 MB.", required: true },
+    { key: "fotoIzquierda", type: "file", q: "Foto del lado izquierdo", hint: "La bici completa, vista desde el lado izquierdo. Máx. 10 MB.", required: true },
+    { key: "fotoPinon", type: "file", q: "Foto del cambio", hint: "Se tiene que ver bien el plato o piñón, el cambio y el desviador trasero. Máx. 10 MB.", required: true },
+    { key: "fotoKm", type: "file", q: "Foto de los kilómetros", hint: "La pantalla de la bici con los kilómetros, con la bici encendida. Máx. 10 MB.", required: true },
     { key: "precio", type: "number", q: "¿Cuánto quieres por ella?", hint: "Si no tienes precio en mente, pon lo que crees que vale.", placeholder: "Ej. 1200", required: true, min: 0, suffix: "€" },
     { key: "telefono", type: "tel", q: "¿Cuál es tu teléfono?", hint: "Te llamamos con la valoración.", placeholder: "600 000 000", value: "+34 ", required: true },
     { key: "email", type: "email", q: "¿Y tu correo electrónico?", hint: "Te enviamos también la oferta por escrito.", placeholder: "tu@correo.com", required: true },
@@ -365,7 +368,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
         if (!file) return;
         if (file.size > 10 * 1024 * 1024) { $("err").textContent = "La foto pesa más de 10 MB. Prueba con otra."; return; }
         answers[s.key] = file.name;
-        photoFile = file;
+        photos[s.key] = file;
         render();
       };
     }
@@ -387,24 +390,27 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   function renderSummary() {
     bar.style.width = "100%";
     count.textContent = "Último paso";
-    var rows = steps.filter(function (s) { return s.key !== "foto"; }).map(function (s) {
+    var rows = steps.filter(function (s) { return s.type !== "file"; }).map(function (s) {
       return '<div><dt>' + esc(s.q.replace(/[?¿]/g, "")) + '</dt><dd>' + esc(answers[s.key] || "-") + (s.suffix ? " " + s.suffix : "") + '</dd></div>';
     }).join("");
     card.innerHTML =
       '<h2 class="q">Revisa tu solicitud</h2>' +
       '<p class="hint">Comprueba que todo está bien antes de enviarla.</p>' +
-      '<dl class="summary">' + rows + '<div><dt>Foto</dt><dd>' + esc(answers.foto || "-") + '</dd></div></dl>' +
+      '<dl class="summary">' + rows + steps.filter(function (s) { return s.type === "file"; }).map(function (s) {
+        return '<div><dt>' + esc(s.q) + '</dt><dd>' + esc(answers[s.key] || "-") + '</dd></div>';
+      }).join("") + '</dl>' +
       '<p class="err" id="send-err"></p><div class="nav"><button class="btn ghost" type="button" id="back">Corregir</button><button class="btn" type="button" id="send">Enviar solicitud</button></div>' +
       '';
     $("back").onclick = function () { idx = steps.length - 1; render(); };
     $("send").onclick = function () {
       var btn = $("send"), errEl = $("send-err");
       var campos = {};
-      Object.keys(answers).forEach(function (k) { if (k !== "foto") campos[k] = answers[k]; });
+      var claves = steps.filter(function (s) { return s.type === "file"; }).map(function (s) { return s.key; });
+      Object.keys(answers).forEach(function (k) { if (claves.indexOf(k) === -1) campos[k] = answers[k]; });
       btn.disabled = true; btn.textContent = "Enviando…"; errEl.textContent = "";
-      function enviar(foto) {
+      function enviar(fotos) {
         // Envío por formulario oculto en un iframe: no depende de CORS y admite fotos grandes.
-        var payload = { campos: campos, foto: foto, website: "" };
+        var payload = { campos: campos, fotos: fotos, foto: fotos[0] || null, website: "" };
         var iframe = document.getElementById("envio-iframe");
         if (!iframe) {
           iframe = document.createElement("iframe");
@@ -422,17 +428,23 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
         document.body.removeChild(form);
         return new Promise(function (resolve) { setTimeout(function () { resolve({ ok: true }); }, 2500); });
       }
-      var leerFoto = new Promise(function (resolve, reject) {
-        if (!photoFile) return resolve(null);
-        var reader = new FileReader();
-        reader.onload = function () {
-          var base64 = String(reader.result).split(",")[1];
-          resolve({ base64: base64, tipo: photoFile.type || "image/jpeg", nombre: photoFile.name });
-        };
-        reader.onerror = function () { reject(new Error("No se pudo leer la foto.")); };
-        reader.readAsDataURL(photoFile);
-      });
-      leerFoto.then(enviar)
+      function leerFoto(file) {
+        return new Promise(function (resolve, reject) {
+          var reader = new FileReader();
+          reader.onload = function () {
+            var base64 = String(reader.result).split(",")[1];
+            resolve({ base64: base64, tipo: file.type || "image/jpeg", nombre: file.name, campo: "" });
+          };
+          reader.onerror = function () { reject(new Error("No se pudo leer la foto.")); };
+          reader.readAsDataURL(file);
+        });
+      }
+      var leerTodas = Promise.all(claves.map(function (k) {
+        var f = photos[k];
+        if (!f) return Promise.reject(new Error("Falta una foto. Revisa los cuatro pasos de fotos."));
+        return leerFoto(f).then(function (r) { r.campo = k; return r; });
+      }));
+      leerTodas.then(enviar)
         .then(function (j) {
           if (!j.ok) throw new Error(j.error || "No se pudo enviar.");
           card.innerHTML = '<div class="done"><h2 class="q">Solicitud recibida</h2><p class="lead" style="margin:0 0 6px">Te llamamos con tu valoración.</p></div>';
