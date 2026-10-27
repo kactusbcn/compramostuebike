@@ -357,11 +357,24 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
       Object.keys(answers).forEach(function (k) { if (k !== "foto") campos[k] = answers[k]; });
       btn.disabled = true; btn.textContent = "Enviando…"; errEl.textContent = "";
       function enviar(foto) {
+        // Envío por formulario oculto en un iframe: no depende de CORS y admite fotos grandes.
         var payload = { campos: campos, foto: foto, website: "" };
-        // mode "no-cors": el script no devuelve cabeceras CORS, así que no podemos leer la respuesta.
-        // La petición sí llega al script; damos el envío por bueno si el navegador no falla al enviarla.
-        return fetch(APPS_SCRIPT_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
-          .then(function () { return { ok: true }; });
+        var iframe = document.getElementById("envio-iframe");
+        if (!iframe) {
+          iframe = document.createElement("iframe");
+          iframe.name = "envio-iframe"; iframe.id = "envio-iframe";
+          iframe.style.display = "none";
+          document.body.appendChild(iframe);
+        }
+        var form = document.createElement("form");
+        form.method = "POST"; form.action = APPS_SCRIPT_URL; form.target = "envio-iframe";
+        var input = document.createElement("input");
+        input.type = "hidden"; input.name = "datos"; input.value = JSON.stringify(payload);
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+        return new Promise(function (resolve) { setTimeout(function () { resolve({ ok: true }); }, 2500); });
       }
       var leerFoto = new Promise(function (resolve, reject) {
         if (!photoFile) return resolve(null);
