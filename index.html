@@ -214,11 +214,10 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     <h1><span class="w">RECIBE LA</span><br><span class="b">MÁXIMA TASACIÓN</span><br><span class="w">DE VENTA POR TU E-BIKE</span></h1>
     <p class="eyebrow" style="margin-top:22px">Tasación gratuita</p>
     <p class="lead"><span class="strong">Rellena el formulario en 2 minutos.</span> Te damos una valoración basada en el modelo, el estado y el precio actual del mercado, y te contactamos con la oferta.</p>
-    <button class="btn fluor" id="start" type="button">¡TASA TU BICICLETA AHORA, ES GRATIS!</button>
   </section>
 
   <!-- Stepper -->
-  <section class="stepper" id="stepper" hidden>
+  <section class="stepper" id="stepper">
     <div class="progress" aria-hidden="true"><span id="bar"></span></div>
     <div class="count" id="count"></div>
     <div class="card" id="card"></div>
@@ -414,7 +413,8 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     };
   }
 
-  $("start").addEventListener("click", open);
+  idx = 0;
+  render();
 })();
 </script>
 </body>
