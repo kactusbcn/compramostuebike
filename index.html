@@ -159,7 +159,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 .faq dt { font-weight: 500; color: var(--fg); }
 .faq dd { margin: 4px 0 0; color: var(--muted); }
 .faq-sec { margin-top: clamp(96px, 25vh, 245px); border-top: 1px solid var(--line); padding-top: 28px; }
-.faq-sec h2 { font-weight: 900; font-size: clamp(22px, 5vw, 28px); line-height: 1.2; margin: 0 0 12px; }
+.faq-sec h2 { font-weight: 900; font-size: clamp(22px, 5vw, 28px); line-height: 1.2; margin: 0 0 12px; color: var(--accent); }
 .faq-sec details { border-top: 1px solid var(--line); padding: 14px 0; }
 .faq-sec summary { cursor: pointer; font-weight: 500; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
 .faq-sec summary::-webkit-details-marker { display: none; }
@@ -181,9 +181,10 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 .faq-sec summary::after { position: static; margin-left: 10px; }
 .faq-sec details p { margin-left: auto; margin-right: auto; }
 .b2b { margin-top: clamp(56px, 12vh, 96px); padding: 30px 22px; border: 1px solid var(--accent); border-radius: 6px; text-align: center; background: var(--panel); }
-.b2b h2 { font-weight: 900; font-size: clamp(22px, 5vw, 28px); line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+.b2b h2 { font-weight: 900; font-size: clamp(22px, 5vw, 28px); line-height: 1.2; margin: 0 0 12px; text-wrap: balance; color: var(--fg); }
+.b2b h2 .b { color: var(--accent); }
 .b2b p { color: var(--muted); margin: 0 auto 22px; max-width: 52ch; }
-.b2b .btn { display: inline-block; width: auto; text-decoration: none; padding: 18px 28px; }
+.b2b .btn { display: inline-block; width: auto; text-decoration: none; padding: 14px 22px; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; }
 @media (max-width: 720px) { .foot-row { grid-template-columns: 1fr; text-align: center; } .foot-contact, .foot-brand { text-align: center; } }
 @media (max-width: 480px) {
   .steps-hint { grid-template-columns: 1fr; }
@@ -208,10 +209,10 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   <!-- Hero -->
   <section id="hero">
     <svg class="mark" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/><circle cx="22" cy="34" r="3" fill="var(--fg)"/><circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/><circle cx="42" cy="34" r="3" fill="var(--accent)"/></svg>
-    <h1><span class="w">Recibe la</span> <span class="b">máxima tasación</span> <span class="w">de venta por tu</span> <span class="b">e-bike</span></h1>
-    <p class="eyebrow">Tasación gratuita</p>
+    <h1><span class="w">RECIBE LA</span><br><span class="b">MÁXIMA TASACIÓN</span><br><span class="w">DE VENTA POR TU E-BIKE</span></h1>
+    <p class="eyebrow" style="margin-top:22px">Tasación gratuita</p>
     <p class="lead"><span class="strong">Rellena el formulario en 2 minutos.</span> Te damos una valoración basada en el modelo, el estado y el precio actual del mercado, y te contactamos con la oferta.</p>
-    <button class="btn fluor" id="start" type="button">TASA TU BICICLETA AHORA, ES GRATIS!</button>
+    <button class="btn fluor" id="start" type="button">¡TASA TU BICICLETA AHORA, ES GRATIS!</button>
   </section>
 
   <!-- Stepper -->
@@ -231,9 +232,9 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 
   <section class="b2b" aria-labelledby="b2b-h">
     <p class="eyebrow">Para tiendas y plataformas</p>
-    <h2 id="b2b-h">¿Buscas stock de bicicletas eléctricas de segunda mano?</h2>
+    <h2 id="b2b-h"><span class="b">¿Buscas stock</span> de bicicletas eléctricas de segunda mano?</h2>
     <p>Si tienes una tienda, una plataforma o un distribuidor, escríbenos. Te decimos qué stock tenemos disponible y en qué condiciones podemos vendértelo.</p>
-    <a class="btn fluor" href="mailto:hola@compramostuebike.com?subject=Compra%20de%20stock">Quiero hablar del stock</a>
+    <a class="btn fluor" href="mailto:hola@compramostuebike.com?subject=Compra%20de%20stock">QUIERO HABLAR DEL STOCK</a>
   </section>
 </main>
 
