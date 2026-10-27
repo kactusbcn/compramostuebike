@@ -254,7 +254,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   </section>
 
   <!-- Stepper -->
-  <section class="stepper" id="stepper" hidden>
+  <section class="stepper" id="stepper">
     <div class="progress" aria-hidden="true"><span id="bar"></span></div>
     <div class="card" id="card"></div>
     <div class="count" id="count"></div>
@@ -476,10 +476,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     function empezar() {
       var st = document.getElementById('stepper');
       started = true;
-      if (st) {
-        st.hidden = false;
-        st.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (st) { st.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
       var f = document.getElementById('f');
       if (f && f.tagName === 'INPUT' && f.type !== 'file') { f.focus({ preventScroll: true }); }
     }
