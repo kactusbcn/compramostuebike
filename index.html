@@ -112,7 +112,7 @@ h1 .w { color: var(--fg); }
 .stepper[hidden] { display: none !important; }
 .progress { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 14px; }
 .progress span { display: block; height: 100%; background: var(--accent); width: 0; transition: width .3s ease; }
-.count { font-size: 12px; color: var(--muted); letter-spacing: .08em; margin-bottom: 26px; }
+.count { font-size: 12px; color: var(--muted); letter-spacing: .08em; margin-top: 18px; text-align: right; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 26px 22px; }
 .q { font-weight: 900; font-size: clamp(22px, 5.5vw, 28px); line-height: 1.2; margin: 0 0 6px; text-wrap: balance; }
 .hint { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
@@ -220,8 +220,8 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   <!-- Stepper -->
   <section class="stepper" id="stepper">
     <div class="progress" aria-hidden="true"><span id="bar"></span></div>
-    <div class="count" id="count"></div>
     <div class="card" id="card"></div>
+    <div class="count" id="count"></div>
   </section>
 
   <section class="faq-sec" aria-labelledby="faq-h">
