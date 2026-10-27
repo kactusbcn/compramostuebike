@@ -192,10 +192,12 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 @media (max-width: 720px) { .foot-row { grid-template-columns: 1fr; text-align: center; } .foot-contact, .foot-brand { text-align: center; } }
 @media (max-width: 480px) {
   .steps-hint { grid-template-columns: 1fr; }
-  .logo { font-size: 22px; }
-  .logo .com { font-size: 13px; }
-  .mark-sm { width: 30px; }
-  .brand { gap: 8px; }
+  header { flex-direction: column; text-align: center; gap: 8px; }
+  .brand { justify-content: center; gap: 8px; }
+  .logo { font-size: clamp(24px, 8vw, 32px); }
+  .logo .com { font-size: clamp(13px, 3.8vw, 18px); }
+  .mark-sm { width: clamp(30px, 9vw, 40px); }
+  .chip { font-size: 11px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
