@@ -71,13 +71,15 @@ img { max-width: 100%; }
 .bg svg { position: absolute; right: -8%; bottom: -6%; width: min(720px, 110vw); opacity: .09; }
 
 header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 18px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.mark-sm { width: 42px; height: auto; flex: 0 0 auto; }
 .logo { font-weight: 900; font-size: 32px; letter-spacing: .01em; color: var(--fg); text-decoration: none; white-space: nowrap; }
 .logo .b { color: var(--accent); }
 .logo .com { font-weight: 900; font-size: 18px; }
 .chip { font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
 
 main { max-width: 640px; margin: 0 auto; padding-block: 28px 64px; }
-.eyebrow { font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #0b0d0f; background: #d4ff3a; display: inline-block; padding: 5px 10px; border-radius: 4px; margin: 0 0 14px; }
 h1 { font-weight: 900; font-size: clamp(34px, 9vw, 60px); line-height: 1.02; letter-spacing: -.02em; margin: 0 0 18px; text-wrap: balance; }
 h1 .b { color: var(--accent); }
 h1 .w { color: var(--fg); }
@@ -191,10 +193,13 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 <div class="bg" aria-hidden="true"></div>
 
 <header>
-  <a class="logo" href="#inicio" aria-label="compramostuebike.com">
-    <span class="b">compramos</span>tu<span class="b">ebike</span><span class="com">.com</span>
-  </a>
-  <span class="chip">Compramos bicicletas eléctricas</span>
+  <div class="brand">
+    <svg class="mark-sm" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/><circle cx="22" cy="34" r="3" fill="var(--fg)"/><circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/><circle cx="42" cy="34" r="3" fill="var(--accent)"/></svg>
+    <a class="logo" href="#inicio" aria-label="compramostuebike.com">
+      <span class="b">compramos</span>tu<span class="b">ebike</span><span class="com">.com</span>
+    </a>
+  </div>
+  <span class="chip">Compra de bicicletas eléctricas</span>
 </header>
 
 <main id="inicio">
@@ -204,7 +209,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     <h1><span class="w">Recibe la</span> <span class="b">máxima tasación</span> <span class="w">de venta por tu</span> <span class="b">e-bike</span></h1>
     <p class="eyebrow">Tasación gratuita</p>
     <p class="lead"><span class="strong">Rellena el formulario en 2 minutos.</span> Te damos una valoración basada en el modelo, el estado y el precio actual del mercado, y te contactamos con la oferta.</p>
-    <button class="btn" id="start" type="button">¡TASA TU BICICLETA AHORA, ES GRATIS!</button>
+    <button class="btn" id="start" type="button">Haz clic ahora y tasa tu bici</button>
   </section>
 
   <!-- Stepper -->
@@ -243,9 +248,13 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   var steps = [
     { key: "nombre", type: "text", q: "¿Cómo te llamas?", hint: "Así sabemos cómo dirigirnos a ti.", placeholder: "Tu nombre", required: true },
     { key: "tipo", type: "choice", q: "¿Qué tipo de e-bike es?", hint: "Solo trabajamos con bicis eléctricas.",
-      options: ["E-MTB (montaña)", "E-Carretera", "E-Gravel", "Otra eléctrica"], required: true },
+      options: ["E-MTB (montaña)", "E-Carretera", "E-Gravel"], required: true },
+    { key: "anio", type: "choice", q: "¿De qué año es?", hint: "Año de fabricación o de compra.",
+      options: ["2026", "2025", "2024", "2023", "2022", "2021"], required: true },
     { key: "km", type: "number", q: "¿Cuántos kilómetros tiene?", hint: "Aproximado. Si no lo sabes, pon una cifra estimada.", placeholder: "Ej. 1200", required: true, min: 0 },
     { key: "bateria", type: "number", q: "¿Qué capacidad tiene la batería?", hint: "En Wh. Viene en la batería o en la ficha técnica.", placeholder: "Ej. 625", required: true, min: 0 },
+    { key: "rueda", type: "choice", q: "¿Qué tamaño de rueda tiene?", hint: "Se mide en pulgadas y viene en la cubierta o en la ficha técnica.",
+      options: ["27,5 pulgadas", "29 pulgadas", "32 pulgadas"], required: true },
     { key: "marca", type: "select", q: "¿Qué marca es?", hint: "Elige la marca o escríbela si no aparece.",
       options: ["Specialized", "Orbea", "Scott", "Giant", "Trek", "Cannondale", "Cube", "Haibike", "Otra"], required: true },
     { key: "modelo", type: "text", q: "¿Qué modelo es?", hint: "Por ejemplo, Turbo Levo o Rize.", placeholder: "Modelo", required: true },
@@ -253,7 +262,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     { key: "velocidades", type: "select", q: "¿Cuántas velocidades tiene?", options: ["13", "12", "11", "10", "9", "Otra / no sé"], required: true },
     { key: "foto", type: "file", q: "Muéstranos tu bici", hint: "Una foto de la bici completa, por el lado de la transmisión. Máx. 10 MB.", required: true },
     { key: "precio", type: "number", q: "¿Cuánto quieres por ella?", hint: "Si no tienes precio en mente, pon lo que crees que vale.", placeholder: "Ej. 1200", required: true, min: 0, suffix: "€" },
-    { key: "telefono", type: "tel", q: "¿Cuál es tu teléfono?", hint: "Te llamamos con la valoración.", placeholder: "600 000 000", required: true },
+    { key: "telefono", type: "tel", q: "¿Cuál es tu teléfono?", hint: "Te llamamos con la valoración.", placeholder: "600 000 000", value: "+34 ", required: true },
     { key: "email", type: "email", q: "¿Y tu correo electrónico?", hint: "Te enviamos también la oferta por escrito.", placeholder: "tu@correo.com", required: true },
     { key: "ciudad", type: "text", q: "¿En qué provincia o ciudad estás?", hint: "Para organizar la recogida o el envío.", placeholder: "Ciudad", required: true }
   ];
@@ -282,7 +291,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     var input = "";
     if (s.type === "text" || s.type === "number" || s.type === "tel" || s.type === "email") {
       var extra = s.min !== undefined ? ' min="' + s.min + '"' : "";
-      input = '<input id="f" type="' + s.type + '" placeholder="' + esc(s.placeholder || "") + '" value="' + esc(prev || "") + '"' + extra + ' autocomplete="off">';
+      input = '<input id="f" type="' + s.type + '" placeholder="' + esc(s.placeholder || "") + '" value="' + esc(prev || s.value || "") + '"' + extra + ' autocomplete="off">';
       if (s.suffix) input = '<div style="display:flex;align-items:center;gap:8px">' + input + '<span style="color:var(--muted)">' + s.suffix + '</span></div>';
     } else if (s.type === "choice") {
       input = '<div class="opts" role="radiogroup">' + s.options.map(function (o) {
