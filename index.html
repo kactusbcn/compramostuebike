@@ -219,7 +219,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     <details><summary>¿Cuánto cuesta la tasación?</summary><p>Es gratuita y sin compromiso.</p></details>
     <details><summary>¿Cuándo me contactáis?</summary><p>Te llamamos en menos de 24 horas con tu valoración.</p></details>
     <details><summary>¿Qué bicicletas compráis?</summary><p>Solo bicicletas eléctricas: e-MTB, e-carretera y e-gravel.</p></details>
-    <details><summary>¿Qué pasa después de enviar el formulario?</summary><p>Revisamos los datos, y te llamamos con la oferta.</p></details>
+    <details><summary>¿Qué pasa después de enviar el formulario?</summary><p>Revisamos los datos y las fotos, y te llamamos con la oferta.</p></details>
   </section>
 
   <section class="b2b" aria-labelledby="b2b-h">
@@ -239,6 +239,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 (function () {
   var answers = {};
   var photoFile = null;
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzV0vwGseWbECQi9e5YI-VoajBxS8ejHH1w2sfv8OeEXMDw6OJwbejAcT3Qg345Be57/exec";
   var steps = [
     { key: "nombre", type: "text", q: "¿Cómo te llamas?", hint: "Así sabemos cómo dirigirnos a ti.", placeholder: "Tu nombre", required: true },
     { key: "tipo", type: "choice", q: "¿Qué tipo de e-bike es?", hint: "Solo trabajamos con bicis eléctricas.",
@@ -250,6 +251,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     { key: "modelo", type: "text", q: "¿Qué modelo es?", hint: "Por ejemplo, Turbo Levo o Rize.", placeholder: "Modelo", required: true },
     { key: "cuadro", type: "choice", q: "¿De qué material es el cuadro?", options: ["Carbono", "Aluminio", "Titanio", "Otro"], required: true },
     { key: "velocidades", type: "select", q: "¿Cuántas velocidades tiene?", options: ["13", "12", "11", "10", "9", "Otra / no sé"], required: true },
+    { key: "foto", type: "file", q: "Muéstranos tu bici", hint: "Una foto de la bici completa, por el lado de la transmisión. Máx. 10 MB.", required: true },
     { key: "precio", type: "number", q: "¿Cuánto quieres por ella?", hint: "Si no tienes precio en mente, pon lo que crees que vale.", placeholder: "Ej. 1200", required: true, min: 0, suffix: "€" },
     { key: "telefono", type: "tel", q: "¿Cuál es tu teléfono?", hint: "Te llamamos con la valoración.", placeholder: "600 000 000", required: true },
     { key: "email", type: "email", q: "¿Y tu correo electrónico?", hint: "Te enviamos también la oferta por escrito.", placeholder: "tu@correo.com", required: true },
@@ -345,20 +347,33 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     card.innerHTML =
       '<h2 class="q">Revisa tu solicitud</h2>' +
       '<p class="hint">Comprueba que todo está bien antes de enviarla.</p>' +
-      '<dl class="summary">' + rows + '</dl>' +
+      '<dl class="summary">' + rows + '<div><dt>Foto</dt><dd>' + esc(answers.foto || "-") + '</dd></div></dl>' +
       '<p class="err" id="send-err"></p><div class="nav"><button class="btn ghost" type="button" id="back">Corregir</button><button class="btn" type="button" id="send">Enviar solicitud</button></div>' +
       '';
     $("back").onclick = function () { idx = steps.length - 1; render(); };
-    var FORM_ENDPOINT = "https://formspree.io/f/xyeeeavv";
     $("send").onclick = function () {
       var btn = $("send"), errEl = $("send-err");
-      var fd = new FormData();
-      Object.keys(answers).forEach(function (k) { if (k !== "foto") fd.append(k, answers[k]); });
-      fd.append("website", "");
+      var campos = {};
+      Object.keys(answers).forEach(function (k) { if (k !== "foto") campos[k] = answers[k]; });
       btn.disabled = true; btn.textContent = "Enviando…"; errEl.textContent = "";
-      fetch(FORM_ENDPOINT, { method: "POST", body: fd, headers: { "Accept": "application/json" } })
-        .then(function (r) { if (!r.ok) throw new Error("No se pudo enviar."); return r; })
-        .then(function () {
+      function enviar(foto) {
+        var payload = { campos: campos, foto: foto, website: "" };
+        return fetch(APPS_SCRIPT_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) })
+          .then(function (r) { return r.json(); });
+      }
+      var leerFoto = new Promise(function (resolve, reject) {
+        if (!photoFile) return resolve(null);
+        var reader = new FileReader();
+        reader.onload = function () {
+          var base64 = String(reader.result).split(",")[1];
+          resolve({ base64: base64, tipo: photoFile.type || "image/jpeg", nombre: photoFile.name });
+        };
+        reader.onerror = function () { reject(new Error("No se pudo leer la foto.")); };
+        reader.readAsDataURL(photoFile);
+      });
+      leerFoto.then(enviar)
+        .then(function (j) {
+          if (!j.ok) throw new Error(j.error || "No se pudo enviar.");
           card.innerHTML = '<div class="done"><h2 class="q">Solicitud recibida</h2><p class="lead" style="margin:0 0 6px">Te llamamos con tu valoración.</p></div>';
           count.textContent = "";
           bar.style.width = "100%";
