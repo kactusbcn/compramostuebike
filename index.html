@@ -448,6 +448,22 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 
   idx = 0;
   render();
+
+  (function () {
+    var tasa = document.querySelector('.tasa-gratis');
+    if (!tasa) return;
+    tasa.setAttribute('role', 'button');
+    tasa.setAttribute('tabindex', '0');
+    tasa.style.cursor = 'pointer';
+    function empezar() {
+      var f = document.getElementById('f');
+      if (f && f.tagName === 'INPUT' && f.type !== 'file') { f.focus({ preventScroll: true }); }
+      var st = document.getElementById('stepper');
+      if (st) st.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    tasa.addEventListener('click', empezar);
+    tasa.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); empezar(); } });
+  })();
 })();
 </script>
 </body>
