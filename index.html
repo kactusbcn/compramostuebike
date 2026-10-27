@@ -201,7 +201,19 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 
 <header>
   <div class="brand">
-    <svg class="mark-sm" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/><circle cx="42" cy="34" r="3" fill="var(--accent)"/><circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/><circle cx="23.5" cy="35.5" r="3" fill="#000" fill-opacity=".55"/><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/><circle cx="22" cy="34" r="3" fill="var(--fg)"/></svg>
+    <svg class="mark-sm" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><defs>
+  <clipPath id="mk1-top"><rect x="0" y="0" width="64" height="34"/></clipPath>
+  <clipPath id="mk1-bot"><rect x="0" y="34" width="64" height="30"/></clipPath>
+  <mask id="mk1-mw" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="22" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+  <mask id="mk1-my" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="42" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+</defs>
+<circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/>
+<g mask="url(#mk1-mw)" clip-path="url(#mk1-top)"><circle cx="43.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/>
+<g mask="url(#mk1-my)" clip-path="url(#mk1-bot)"><circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<g clip-path="url(#mk1-bot)"><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="3" fill="var(--accent)"/>
+<circle cx="22" cy="34" r="3" fill="var(--fg)"/></svg>
     <a class="logo" href="#inicio" aria-label="compramostuebike.com">
       <span class="b">compramos</span>tu<span class="b">ebike</span><span class="com">.com</span>
     </a>
@@ -212,7 +224,19 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
 <main id="inicio">
   <!-- Hero -->
   <section id="hero">
-    <svg class="mark" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/><circle cx="42" cy="34" r="3" fill="var(--accent)"/><circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/><circle cx="23.5" cy="35.5" r="3" fill="#000" fill-opacity=".55"/><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/><circle cx="22" cy="34" r="3" fill="var(--fg)"/></svg>
+    <svg class="mark" viewBox="7 19 51 31" aria-hidden="true" focusable="false"><defs>
+  <clipPath id="mk2-top"><rect x="0" y="0" width="64" height="34"/></clipPath>
+  <clipPath id="mk2-bot"><rect x="0" y="34" width="64" height="30"/></clipPath>
+  <mask id="mk2-mw" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="22" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+  <mask id="mk2-my" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="42" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+</defs>
+<circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/>
+<g mask="url(#mk2-mw)" clip-path="url(#mk2-top)"><circle cx="43.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="12" fill="none" stroke="var(--accent)" stroke-width="5"/>
+<g mask="url(#mk2-my)" clip-path="url(#mk2-bot)"><circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<g clip-path="url(#mk2-bot)"><circle cx="22" cy="34" r="12" fill="none" stroke="var(--fg)" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="3" fill="var(--accent)"/>
+<circle cx="22" cy="34" r="3" fill="var(--fg)"/></svg>
     <h1><span class="w">RECIBE LA</span><br><span class="b">MÁXIMA TASACIÓN</span><br><span class="w">DE VENTA POR TU </span><span class="b">E-BIKE</span></h1>
     <p class="eyebrow tasa-gratis">Tasación gratuita</p>
     <p class="lead">Te damos una valoración basada en el modelo, el estado y el precio actual del mercado. Te contactaremos con una oferta seria en menos de 24 horas.<br><span class="strong">Rellena el formulario en 1 minuto.</span></p>

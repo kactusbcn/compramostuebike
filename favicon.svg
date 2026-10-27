@@ -1,9 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#0b0b0c"/>
-  <circle cx="42" cy="34" r="12" fill="none" stroke="#d4ff3a" stroke-width="5"/>
-  <circle cx="42" cy="34" r="3" fill="#d4ff3a"/>
-  <circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/>
-  <circle cx="23.5" cy="35.5" r="3" fill="#000" fill-opacity=".55"/>
-  <circle cx="22" cy="34" r="12" fill="none" stroke="#f4f6f7" stroke-width="5"/>
-  <circle cx="22" cy="34" r="3" fill="#f4f6f7"/>
+  <defs>
+  <clipPath id="fav-top"><rect x="0" y="0" width="64" height="34"/></clipPath>
+  <clipPath id="fav-bot"><rect x="0" y="34" width="64" height="30"/></clipPath>
+  <mask id="fav-mw" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="22" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+  <mask id="fav-my" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64"><circle cx="42" cy="34" r="12" fill="none" stroke="#fff" stroke-width="5"/></mask>
+</defs>
+<circle cx="22" cy="34" r="12" fill="none" stroke="#f4f6f7" stroke-width="5"/>
+<g mask="url(#fav-mw)" clip-path="url(#fav-top)"><circle cx="43.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="12" fill="none" stroke="#d4ff3a" stroke-width="5"/>
+<g mask="url(#fav-my)" clip-path="url(#fav-bot)"><circle cx="23.5" cy="35.5" r="12" fill="none" stroke="#000" stroke-opacity=".55" stroke-width="5"/></g>
+<g clip-path="url(#fav-bot)"><circle cx="22" cy="34" r="12" fill="none" stroke="#f4f6f7" stroke-width="5"/></g>
+<circle cx="42" cy="34" r="3" fill="#d4ff3a"/>
+<circle cx="22" cy="34" r="3" fill="#f4f6f7"/>
 </svg>
