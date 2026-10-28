@@ -367,6 +367,18 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     });
   }
   var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzV0vwGseWbECQi9e5YI-VoajBxS8ejHH1w2sfv8OeEXMDw6OJwbejAcT3Qg345Be57/exec";
+  // Marcas y modelos más vendidos por modalidad (los 4 de cada lista + "Otro" en el formulario).
+  var MARCAS = ["Canyon", "Cannondale", "Cube", "Conor / WRC", "BH Bikes", "Focus", "Giant / Liv", "Megamo", "Mondraker", "MMR", "Moustache", "Orbea", "Scott", "Specialized", "Trek", "Otra"];
+  var MODELOS = {
+    "E-MTB (montaña)": {"Orbea": ["Wild", "Rise", "Urrun", "Keram"], "Specialized": ["Turbo Levo", "Turbo Levo SL", "Turbo Kenevo", "Turbo Kenevo SL"], "BH Bikes": ["iLynx Trail", "iLynx+ Enduro", "AtomX", "AtomTrek"], "Trek": ["Rail", "Fuel EXe", "Marlin+", "Slash+"], "Cannondale": ["Moterra Neo", "Moterra Neo SL", "Habit Neo", "Trail Neo"], "Mondraker": ["Crafty", "Dusk", "Neat", "Chaser"], "Scott": ["Patron eRide", "Lumen eRide", "Strike eRide", "Aspect eRide"], "Giant / Liv": ["Trance X E+", "Stance E+", "Reign E+", "Talon E+"], "Megamo": ["Crave", "Ridon", "Kinetic", "Ridon HT"], "Canyon": ["Spectral:ON", "Torque:ON", "Strive:ON", "Grand Canyon:ON"], "MMR": ["X-Bolt", "Core", "Kaizen", "Tempo"], "Focus": ["JAM² (Jam Squared)", "VAM²", "THRON²", "Jarifa²"], "Cube": ["Stereo Hybrid 140/160", "Reaction Hybrid", "Kathmandu Hybrid", "Acid Hybrid"], "Conor / WRC": ["WRC E-Tripp", "WRC E-Fox", "Bali", "E-Kalahari"], "Moustache": ["Samedi 29 Trail", "Samedi 29 Game", "Samedi 29 Wide", "Samedi 27 Off"]},
+    "E-Carretera": {"Orbea": ["Gain M10/M20", "Gain D30/D40", "Gain Carbon", "Gain Hydro"], "Specialized": ["Turbo Creo SL", "Turbo Creo 2 Road", "Turbo Creo SL Expert", "Turbo Creo SL Comp"], "BH Bikes": ["Core Race", "Core Carbon Road", "iLynx Race Road", "Core Endurance"], "Trek": ["Domane+ SLR", "Domane+ ALR", "Domane+ LT", "Domane+ HP"], "Cannondale": ["Synapse Neo", "SuperSix EVO Neo", "Synapse Neo SE", "Quick Neo"], "Mondraker": [], "Scott": ["Addict eRide 10", "Addict eRide 20", "Solace eRide Road", "Addict eRide Premium"], "Giant / Liv": ["Road E+ Pro", "FastRoad E+", "Road E+ 1", "Thrive E+ (Liv)"], "Megamo": ["Pulse E-Road", "Raise E", "Ayron E-Road", "Core Road E"], "Canyon": ["Endurace:ON", "Endurace:ONfly", "Roadlite:ON", "Grail:ON Road Edition"], "MMR": ["Beat Road", "Pulse E", "Tempo Road", "X-Beat Road"], "Focus": ["Paralane² 9.9", "Paralane² 6.8", "Paralane² Carbon", "Izalco MAX E"], "Cube": ["Agree Hybrid C:62", "Attain Hybrid", "Nuroad Hybrid Road", "Axial WS Hybrid"], "Conor / WRC": ["WRC E-Drop", "E-Road WRC", "E-Speed", "E-Street"], "Moustache": ["Dimanche 28 Road", "Dimanche 28 Fitness", "Dimanche 28 Pro", "Dimanche 29 Road"]},
+    "E-Gravel": {"Orbea": ["Gain Hydro Gravel", "Gain Carbon Gravel", "Kemen SUV (versión gravel)", "Diem (All-Road)"], "Specialized": ["Turbo Creo 2", "Turbo Creo SL EVO", "Turbo Como SL (All-road)", "Diverge STR E-Ready"], "BH Bikes": ["iGravelX Carbon", "iGravelX Aluminum", "Core GravelX", "GravelX Evo"], "Trek": ["Domane+ AL Gravel", "Checkpoint+", "Domane+ SLR Gravel", "FX+ (Gravel Build)"], "Cannondale": ["Topstone Neo Carbon", "Topstone Neo SL", "Topstone Neo Carbon Lefty", "Canvas Neo"], "Mondraker": ["Dusty R", "Dusty RR", "Dusty XR", "Dusty SX"], "Scott": ["Solace eRide Gravel", "Addict eRide Gravel", "Axis eRide (Gravel Build)", "Sub eRide Gravel"], "Giant / Liv": ["Revolt E+", "ToughRoad E+", "FastRoad E+ EX", "Explore E+ (Gravel Build)"], "Megamo": ["Kansas", "West E-Gravel", "Jakar E", "Central E-Gravel"], "Canyon": ["Grizl:ON", "Grail:ON", "Endurace:ON (Gravel setup)", "Pathlite:ON"], "MMR": ["X-Beat", "Beat Gravel", "Kaizen Gravel", "Tempo Gravel"], "Focus": ["Paralane² Gravel", "Atlas²", "Planet² Gravel", "Crater Lake²"], "Cube": ["Nuroad Hybrid C:62", "Nuroad Hybrid FE", "Cross Hybrid Gravel", "Trike Hybrid Gravel"], "Conor / WRC": ["WRC E-Selva", "E-Gravel WRC", "E-Swing", "E-Oasis"], "Moustache": ["Dimanche 29 Gravel", "Dimanche 29 Open Gravel", "Dimanche 28 Gravel", "Samedi 28 Allroad"]}
+  };
+  function modeloOpciones() {
+    var lista = (MODELOS[answers.tipo] || {})[answers.marca] || [];
+    return lista.concat(["Otro"]);
+  }
+
   var steps = [
     { key: "nombre", type: "text", q: "¿Cómo te llamas?", hint: "Así sabemos cómo dirigirnos a ti.", placeholder: "Tu nombre", required: true },
     { key: "tipo", type: "choice", q: "¿Qué tipo de e-bike es?", hint: "Solo trabajamos con bicis eléctricas.",
@@ -376,10 +388,10 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     { key: "km", type: "number", q: "¿Cuántos kilómetros tiene?", hint: "Aproximado. Si no lo sabes, pon una cifra estimada.", placeholder: "Ej. 1200", required: true, min: 0 },
     { key: "bateria", type: "number", q: "¿Qué capacidad tiene la batería?", hint: "En Wh. Viene en la batería o en la ficha técnica.", placeholder: "Ej. 625", required: true, min: 0 },
     { key: "rueda", type: "choice", q: "¿Qué tamaño de rueda tiene?", hint: "Se mide en pulgadas y viene en la cubierta o en la ficha técnica.",
-      options: ["27,5 pulgadas", "29 pulgadas", "32 pulgadas"], required: true },
+      options: ["29 pulgadas", "32 pulgadas", "Mullet (29 delante, 27,5 detrás)"], required: true },
     { key: "marca", type: "select", q: "¿Qué marca es?", hint: "Elige la marca o escríbela si no aparece.",
-      options: ["Specialized", "Orbea", "Scott", "Giant", "Trek", "Cannondale", "Cube", "Haibike", "Otra"], required: true },
-    { key: "modelo", type: "text", q: "¿Qué modelo es?", hint: "Por ejemplo, Turbo Levo o Rize.", placeholder: "Modelo", required: true },
+      options: MARCAS, required: true },
+    { key: "modelo", type: "select", q: "¿Qué modelo es?", hint: "Elige el modelo. Si no aparece, elige Otro y escríbelo.", options: [], required: true },
     { key: "cuadro", type: "choice", q: "¿De qué material es el cuadro?", options: ["Carbono", "Aluminio", "Titanio", "Otro"], required: true },
     { key: "velocidades", type: "select", q: "¿Cuántas velocidades tiene?", options: ["13", "12", "11", "10", "9", "Otra / no sé"], required: true },
     { key: "fotoDerecha", type: "file", q: "Foto del lado derecho", hint: "La bici completa, vista desde el lado derecho. Se reduce automáticamente en tu móvil.", required: true },
@@ -424,9 +436,15 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
         return '<button type="button" class="opt" role="radio" aria-checked="' + (prev === o) + '" data-v="' + esc(o) + '">' + esc(o) + '</button>';
       }).join("") + '</div>';
     } else if (s.type === "select") {
-      input = '<select id="f"><option value="">Elige una opción</option>' + s.options.map(function (o) {
-        return '<option' + (prev === o ? " selected" : "") + '>' + esc(o) + '</option>';
+      var opts = s.key === "modelo" ? modeloOpciones() : s.options;
+      var prevSel = (prev && prev.indexOf("Otro: ") === 0) ? "Otro" : prev;
+      var prevTxt = (prev && prev.indexOf("Otro: ") === 0) ? prev.slice(6) : "";
+      input = '<select id="f"><option value="">Elige una opción</option>' + opts.map(function (o) {
+        return '<option' + (prevSel === o ? " selected" : "") + '>' + esc(o) + '</option>';
       }).join("") + '</select>';
+      if (s.key === "modelo") {
+        input += '<input id="modelo-otro" type="text" placeholder="Escribe el modelo" autocomplete="off" value="' + esc(prevTxt) + '" style="margin-top:10px;display:' + (prevSel === "Otro" ? "block" : "none") + '">';
+      }
     } else if (s.type === "file") {
       input = '<label class="file ' + (prev ? "has" : "") + '" id="drop">' + (prev ? esc(prev) : "Toca para elegir una foto") + '<input id="f" type="file" accept="image/*"></label>';
     }
@@ -448,6 +466,9 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
       return;
     }
     var f = $("f");
+    if (s.key === "modelo") {
+      f.onchange = function () { $("modelo-otro").style.display = f.value === "Otro" ? "block" : "none"; };
+    }
     if (s.type === "file") {
       f.onchange = function () {
         var file = f.files[0];
@@ -467,6 +488,11 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
     if (started && s.type !== "file" && s.type !== "select") f.focus && setTimeout(function () { f.focus(); }, 60);
     function go() {
       var v = s.type === "file" ? answers[s.key] : (f.value || "").trim();
+      if (s.key === "modelo" && v === "Otro") {
+        var txt = ($("modelo-otro").value || "").trim();
+        if (!txt) { $("err").textContent = "Escribe el modelo."; return; }
+        v = "Otro: " + txt;
+      }
       if (s.required && !v) { $("err").textContent = "Este campo es obligatorio."; return; }
       if (s.type === "email" && v && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $("err").textContent = "Revisa el correo, parece que le falta algo."; return; }
       if (s.type === "tel" && v && v.replace(/\D/g, "").length < 9) { $("err").textContent = "El teléfono necesita 9 cifras."; return; }
