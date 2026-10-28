@@ -262,7 +262,7 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
   </section>
 
   <section class="faq-sec" aria-labelledby="faq-h">
-    <h2 id="faq-h">Preguntas más frecuentes</h2>
+    <h2 id="faq-h">FAQS</h2>
     <details><summary>¿Cuánto cuesta la tasación?</summary><p>Es gratuita y sin compromiso.</p></details>
     <details><summary>¿Cuándo me contactáis?</summary><p>Te llamamos en menos de 24 horas con tu valoración.</p></details>
     <details><summary>¿Qué bicicletas compráis?</summary><p>Solo compramos bicicletas eléctricas: e-MTB (montaña), e-carretera y e-gravel, del año 2021 en adelante.</p></details>
@@ -502,6 +502,9 @@ footer { margin-top: 64px; padding-block: 28px; border-top: 1px solid var(--line
           if (!j.ok) throw new Error(j.error || "No se pudo enviar.");
           card.innerHTML = '<div class="done"><h2 class="q">Solicitud recibida</h2><p class="lead" style="margin:0 0 6px">Te llamamos con tu valoración.</p></div>';
           count.textContent = "";
+          card.style.minHeight = "240px";
+          var stp = document.getElementById("stepper");
+          if (stp) { stp.scrollIntoView({ behavior: "smooth", block: "start" }); }
           bar.style.width = "100%";
         })
         .catch(function (e) {
